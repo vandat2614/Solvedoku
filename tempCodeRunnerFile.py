@@ -1,0 +1,2 @@
+    slide('left')
+    slide('right')

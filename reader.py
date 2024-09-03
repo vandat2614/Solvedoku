@@ -57,6 +57,9 @@ class Reader:
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         approx, grid_size = Reader.detect(gray_image)
 
+        print(approx[0]) # 680, 137 -> 16x16
+        # 696, 168 -> 9x9
+
         points_src = np.float32([approx[0], approx[3], approx[1], approx[2]])
         points_dst = np.float32([[0, 0], [cls.WIDTH, 0], [0, cls.HEIGHT], [cls.WIDTH, cls.HEIGHT]])
 
@@ -66,6 +69,6 @@ class Reader:
         Reader.extract(grid_image, grid_size)
     
 
-image = cv2.imread('image.png')
+image = cv2.imread('image9.png')
 grid_image = Reader.read(image)
 
