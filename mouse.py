@@ -1,13 +1,10 @@
 import pyautogui
 
-
 class Mouse:
     @classmethod
-    def click_cell(cls, row, col, grid_size):
-        if grid_size == 9:
-            start_x, start_y, width = 715, 185, 55
-        elif grid_size == 16:
-            start_x, start_y, width = 695, 154, 33
+    def click_cell(cls, row, col, start, width):
+        start_x = start[0] + 20
+        start_y = start[1] + 20
 
         target_x = start_x + col * width
         target_y = start_y + row * width 
@@ -19,14 +16,14 @@ class Mouse:
         start_x, target_y = 700, 850
         
         if type(value) == int:
-            target_x = start_x + value * 60
+            target_x = start_x + (value-1) * 60
         else:
             target_x = start_x + (ord(value) - ord('A')) * 80
 
         pyautogui.click(target_x, target_y)
  
     @classmethod
-    def slide(direct):
+    def slide(cls, direct):
         if direct == 'left':
             start, target = (1200, 850), (600, 850)
         elif direct == 'right':

@@ -1,2 +1,1 @@
-    slide('left')
-    slide('right')
+735, 212, 52

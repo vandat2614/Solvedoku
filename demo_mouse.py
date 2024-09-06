@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 
-image = cv2.imread('image.png')
+image = cv2.imread('image1.png')
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 # # 16x16
@@ -26,8 +26,8 @@ start_y = 850
 # 60 for 1->9
 # 80 for A->G
 
-for num in range(7):
-    x = start_x + num * 80
+for num in range(9):
+    x = start_x + num * 60
     y = start_y
     print(x, y)
     cv2.circle(image, (x, y), 10, (0, 0, 255))
@@ -35,15 +35,15 @@ for num in range(7):
 plt.imshow(image)
 plt.show()
 
-import time
+# import time
 
-def slide():
+# def slide():
 
-    pyautogui.moveTo(1180, 850)
+#     pyautogui.moveTo(1180, 850)
 
-    pyautogui.mouseDown(button='left')
-    pyautogui.dragTo(600, 850, 0.2)
-    pyautogui.mouseUp(button='left')
+#     pyautogui.mouseDown(button='left')
+#     pyautogui.dragTo(600, 850, 0.2)
+#     pyautogui.mouseUp(button='left')
 
-slide()
+# slide()
 
