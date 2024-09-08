@@ -56,3 +56,6 @@ class Mouse:
         Mouse.click_cell(row, col, grid_size)
         Mouse.click_value(value, start)
 
+    @classmethod
+    def click(cls, x, y):
+        pyautogui.click(x, y)
