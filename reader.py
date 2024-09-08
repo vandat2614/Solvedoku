@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 
 class Reader:
-    GRID9_AREA_THRES = 200000
-    GRID16_AREA_THRES = 270000
+    AREA_THRES = 200000
+    CANNOT_DETECT = -1
     model = tf.keras.models.load_model('train_model\pre_trained_model.h5')
 
     @classmethod
-    def detect(cls, gray_image):
+    def detect(cls, gray_image, grid_size):
         blur_image = cv2.GaussianBlur(gray_image, (5, 5), 3)
         canny_image = cv2.Canny(blur_image, 50, 50)
 
@@ -17,16 +17,14 @@ class Reader:
         max_contour = max(contours, key = lambda contour : cv2.contourArea(contour))
         max_area = cv2.contourArea(max_contour)
 
-        if max_area >= cls.GRID16_AREA_THRES:
-            grid_size = 16
-        elif max_area >= cls.GRID9_AREA_THRES:
-            grid_size = 9
+        if max_area < cls.AREA_THRES:
+            return cls.CANNOT_DETECT, cls.CANNOT_DETECT
 
         peri = cv2.arcLength(max_contour, True)
         approx = cv2.approxPolyDP(max_contour, 0.02*peri, True) # l-t, l-d, r-d, r-t
-        width = peri//4//grid_size
+        width = int(peri//4//grid_size)
 
-        return approx, grid_size, width
+        return approx, width
     
     @classmethod
     def extract(cls, grid_image, grid_size):
@@ -90,9 +88,12 @@ class Reader:
         return new_grid
 
     @classmethod
-    def read(cls, image):
+    def read(cls, image, grid_size):
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        approx, grid_size, width = Reader.detect(gray_image)
+        approx, width = Reader.detect(gray_image, grid_size)
+
+        if width == Reader.CANNOT_DETECT:
+            return Reader.CANNOT_DETECT, None, None
 
         points_src = np.float32([approx[0], approx[3], approx[1], approx[2]])
         points_dst = np.float32([[0, 0], [1080, 0], [0, 1080], [1080, 1080]])
